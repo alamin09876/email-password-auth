@@ -3,38 +3,38 @@ import './App.css';
 import { getAuth } from "firebase/auth";
 import app from './firebase/firebase.init';
 import ReactBootstrap from './components/ReactBootstrap/ReactBootstrap';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import Main from './layouts/Main';
+import Login from './components/Login/Login';
 
-const auth = getAuth(app)
 
-const handleSubmit = (event) =>{
-  event.preventDefault();
-
-  const email = event.target.email.value;
-  const password = event.target.password.value;
-  console.log(email, password);
-}
-
-const handleEmailFieldBlur = event =>{
-  console.log(event.target.value)
-}
-const handlePasswordFieldBlur = event =>{
-  console.log(event.target.value)
-}
 
 
 
 function App() {
+  const router = createBrowserRouter([
+    {
+      path: '/',
+      element : <Main></Main>,
+      children : [
+        {
+          path: '/',
+          element : <ReactBootstrap></ReactBootstrap>,
+        },
+        {
+          path: '/register',
+          element : <ReactBootstrap></ReactBootstrap>,
+        },
+        {
+          path: '/login',
+          element : <Login></Login>,
+        }
+      ]
+    }
+  ])
   return (
     <div >
-      {/* <form onSubmit={handleSubmit}>
-        <input onBlur={handleEmailFieldBlur} type="email" name="email" id="" placeholder ='your email' />
-        <br></br>
-        <input onBlur={handlePasswordFieldBlur} type="password" name="password" id="" placeholder ='your password'/>
-        <br></br>
-        <button>Register</button>
-        
-      </form> */}
-      <ReactBootstrap></ReactBootstrap>
+      <RouterProvider router = {router}></RouterProvider>
     </div>
   );
 }
